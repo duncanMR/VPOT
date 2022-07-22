@@ -47,7 +47,7 @@ def initial_setup():
 		VPOT_conf.output_dir=sys.argv[2] #
 		VPOT_conf.input_file=sys.argv[3] #
 		VPOT_conf.gene_list=sys.argv[4] #
-		VPOT_conf.final_output_file=VPOT_conf.output_dir+"gene_filtered_output_file"+suffix+".txt" #
+		VPOT_conf.final_output_file=VPOT_conf.output_dir+"gene_filtered_output_file_"+suffix+".txt" #
 		print ("output : ",VPOT_conf.final_output_file) #
 	
 	return 0 #

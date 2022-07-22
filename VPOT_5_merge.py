@@ -13,7 +13,7 @@ nl='\n' #
 ###########################################################################################################
 # Define global variables
 ##########################################################################################################
-suffix=str(int(time.time())) # get a unique timestamp for suffix 
+suffix="" # get a unique timestamp for suffix 
 #
 supplied_args=0 #
 #
@@ -46,7 +46,7 @@ def initial_setup():
 		VPOT_conf.input_file=sys.argv[3] # file containing list of VPOLs
 #		print (VPOT_conf.input_file)
 	#
-		VPOT_conf.final_output_file=VPOT_conf.output_dir+"variant_merge_file_"+suffix+".txt" #
+		VPOT_conf.final_output_file=VPOT_conf.output_dir+"variant_merge_file"+suffix+".txt" #
 		VPOT_conf.temp_output_file=VPOT_conf.output_dir+"variant_merge_file_"+suffix+"_tmp.txt" #
 		VPOT_conf.working_file1=VPOT_conf.output_dir+"working_file1_"+suffix+"_tmp.txt" #
 		VPOT_conf.working_file2=VPOT_conf.output_dir+"working_file2_"+suffix+"_tmp.txt" #

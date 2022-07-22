@@ -11,7 +11,7 @@ from shutil import copyfile #
 ###########################################################################################################
 # Define global variables
 ##########################################################################################################
-suffix=str(int(time.time())) # get a unique timestamp for suffix 
+suffix=""
 #
 supplied_args=0 #
 #
@@ -74,7 +74,7 @@ def initial_setup():
 		VPOT_conf.full_file2=VPOT_conf.output_dir+"full_file2_"+suffix+"_tmp.txt" #
 		VPOT_conf.sort_file1=VPOT_conf.output_dir+"sort_file1_"+suffix+"_tmp.txt" #
 		VPOT_conf.sort_file2=VPOT_conf.output_dir+"sort_file2_"+suffix+"_tmp.txt" #
-		VPOT_conf.final_output_file=VPOT_conf.output_dir+"final_output_file_"+suffix+".txt" #
+		VPOT_conf.final_output_file=VPOT_conf.output_dir+"final_output_file"+suffix+".txt" #
 	
 	return 0 #
 #

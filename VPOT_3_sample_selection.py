@@ -11,7 +11,7 @@ from shutil import copyfile #
 ###########################################################################################################
 # Define global variables
 ##########################################################################################################
-suffix=str(int(time.time())) # get a unique timestamp for suffix 
+suffix=""
 #
 supplied_args=0 #
 #
@@ -56,8 +56,8 @@ def initial_setup():
 			VPOT_conf.inh_sample=sys.argv[5] #
 			VPOT_conf.inh_model=sys.argv[6] #
 			VPOT_conf.output_dir=sys.argv[2]+VPOT_conf.inh_sample+"_"+VPOT_conf.inh_model+"_" #
-#			VPOT_conf.final_output_file=VPOT_conf.output_dir+"variant_filtered_output_file_"+VPOT_conf.inh_sample+"_"+VPOT_conf.inh_model+"_"+suffix+".txt" #
-		VPOT_conf.final_output_file=VPOT_conf.output_dir+"variant_filtered_output_file_"+suffix+".txt" #
+#			VPOT_conf.final_output_file=VPOT_conf.output_dir+"variant_filtered_output_file_"+VPOT_conf.inh_sample+"_"+VPOT_conf.inh_model+suffix+".txt" #
+		VPOT_conf.final_output_file=VPOT_conf.output_dir+"variant_filtered_output_file"+suffix+".txt" #
 		print ("output : ",VPOT_conf.final_output_file) #
 	
 	return 0 #

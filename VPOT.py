@@ -155,6 +155,9 @@ def main(): #
 	elif (VPOT_conf.VPOT_option=="utility"): #
 #		print ("opt6") 
 		VPOT_6_utility.main() #
+	elif (VPOT_conf.VPOT_option=="genepanelf"): #
+#		print ("opt2") 
+		VPOT_7_GenePanel.main() #
 	elif (VPOT_conf.VPOT_option=="help"): #
 		for j in range(len(info_opt0_msg1)): #
 			print (info_opt0_msg1[j]) #

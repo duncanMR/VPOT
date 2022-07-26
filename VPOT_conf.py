@@ -14,6 +14,17 @@ nl='\n' #
 ##########################################################################################################
 #
 def init(): ##
+    ######################################
+    #additions for gene panel function:
+	global cancer_type #
+	cancer_type="" #
+	global final_output_file_list #
+	final_output_file_list=[] #
+	global panel_gene_list #
+	panel_gene_list=[] #
+	global panel_name_list #
+	panel_name_list=[] #
+    ######################################
 	global VPOT_option #
 	VPOT_option=0 #
 	global input_file #

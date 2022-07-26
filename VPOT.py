@@ -9,7 +9,7 @@
 #
 import sys, re, glob, os, subprocess, time #
 import numpy as np #
-import VPOT_conf, VPOT_1_prioritise, VPOT_2_Gene, VPOT_3_sample_selection, VPOT_4_stats, VPOT_5_merge, VPOT_6_utility #
+import VPOT_conf, VPOT_1_prioritise, VPOT_2_Gene, VPOT_3_sample_selection, VPOT_4_stats, VPOT_5_merge, VPOT_6_utility, VPOT_7_GenePanel#
 from shutil import copyfile #
 #
 #

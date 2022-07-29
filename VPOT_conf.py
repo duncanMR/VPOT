@@ -24,6 +24,8 @@ def init(): ##
 	panel_gene_list=[] #
 	global panel_name_list #
 	panel_name_list=[] #
+	global n_panels #
+	n_panels=0 #
     ######################################
 	global VPOT_option #
 	VPOT_option=0 #

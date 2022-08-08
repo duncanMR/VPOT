@@ -120,4 +120,10 @@ gnomAD_exome_NFE
 gnomAD_exome_OTH
 gnomAD_exome_SAS
 ANNOVAR_DATE
+gerp++gt2
+dann
+Eigen
+GWAVA_region_score
+GWAVA_tss_score
+GWAVA_unmatched_score
 Interpro_domain

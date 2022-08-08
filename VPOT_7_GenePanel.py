@@ -139,7 +139,7 @@ def expand_info(df):
 	return pd.concat([df,anno[col_names]], axis=1)
 
 def export_to_excel():
-	with pd.ExcelWriter(VPOT_conf.output_dir+"output_genepanels.xlsx", mode="w",
+	with pd.ExcelWriter(VPOT_conf.output_dir+"output_genepanels.xlsx", mode="w", engine="xlsxwriter",
 						engine_kwargs={'options': {'strings_to_numbers': True}}) as writer:
 		workbook = writer.book
 		for n in range(VPOT_conf.n_panels):

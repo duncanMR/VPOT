@@ -121,9 +121,10 @@ gnomAD_exome_OTH
 gnomAD_exome_SAS
 ANNOVAR_DATE
 gerp++gt2
+FATHMM_noncoding
+FATHMM_coding
 dann
 Eigen
-GWAVA_region_score
-GWAVA_tss_score
-GWAVA_unmatched_score
+CADDgt20
+CADDgt20_Phred
 Interpro_domain

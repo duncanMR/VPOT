@@ -2,12 +2,12 @@ PF	Population_filter	Value
 PF	gnomad_exome	0.05	LE
 PF	1000g2015aug_all	0.05	LE
 PD	Predictors	Type	Low	Value	Mid	Value	High	Value
-PD	gerp++gt2	N	2	0		2	1.2	4
+PD	gerp++gt2	N	2	0	2	1.2	4
 PD	eigen	N	0.8	0	1.2	2	1.2	4
 PD	dann	N	0.96	0	0.98	2	0.98	4
 PD	FATHMM_coding	N	0.8	0	0.9	2	0.9	4
 PD	FATHMM_noncoding	N	0.8	0	0.9	2	0.9	4
-PD	CADDgt20_Phred	N	10	0	20	2	20	4
+PD	CADDgt10_Phred	N	10	0	20	2	20	4
 PD	Polyphen2_HDIV_pred	A	B	0	P	2	D	4	
 PD	Polyphen2_HVAR_pred	A	B	0	P	2	D	4
 PD	MCAP	N	0	0	0.025	0	0.025	4
@@ -24,6 +24,12 @@ PD	MetaRNN_pred	A	T	0	D	2
 PD	phyloP20way_mammalian	N	0.9	0	1	1	1	2
 PD	SiPhy_29way_logOdds	N	12	0	16	1	16	2
 VT	Variant_annotation	Exception_variant_types	Value
+VT	CLNSIG	Pathogenic/Likely_pathogenic	100
+VT	CLNSIG	Pathogenic	100
+VT	CLNSIG	Likely_pathogenic	100
+VT	CLNSIG	Conflicting_interpretations_of_pathogenicity	30
+VT	CLNSIG	Uncertain_significance	20
+VT	CLNSIG	other	10
 VT	ExonicFunc.refGene	splicing	35
 VT	ExonicFunc.refGene	stopgain	50
 VT	ExonicFunc.refGene	stoploss	50

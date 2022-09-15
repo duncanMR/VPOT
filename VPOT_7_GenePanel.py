@@ -133,10 +133,9 @@ def extract_anno(string):
 	return pd.Series(matches_df.values[1],index=matches_df.iloc[0]).replace(".",np.NaN)
 
 def expand_info(df):
-	col_names = pd.read_csv(os.path.join(script_dir, "default_params/default_col_names.txt"), header=None).iloc[:,0].tolist()
 	anno = df["INFO"].apply(extract_anno)
-	df.drop("INFO", inplace=True, axis=1) 
-	return pd.concat([df,anno[col_names]], axis=1)
+	df.drop("INFO", inplace=True, axis=1)
+	return pd.concat([df,anno], axis=1)
 
 def export_to_excel():
 	with pd.ExcelWriter(VPOT_conf.output_dir+"output_genepanels.xlsx", mode="w", engine="xlsxwriter",

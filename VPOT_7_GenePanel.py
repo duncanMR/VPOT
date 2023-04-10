@@ -27,6 +27,7 @@ info_msg1_2="VPOT genef : 1) output destination directory + prefix" #
 info_msg1_3="VPOT genef : 2) Input file - output from VPOT prioritisation process" 
 info_msg1_4="VPOT genef : 3) Gene list in csv format" #
 info_msg1_5="VPOT genef : 4) Cancer type (must be column name in genelist)" #
+info_msg1_6="VPOT genef : 5) CSV list of columns to include in header of Excel file" #
 #
 script_dir = os.path.dirname(__file__)
 ############################################################################################################
@@ -37,22 +38,28 @@ script_dir = os.path.dirname(__file__)
 
 def initial_setup():
 #
-	global supplied_args 
+	global supplied_args
 	#
 	print ("initial_setup():") #
 	print (suffix) #
 #	print sys.argv #
 	supplied_args=len(sys.argv) #
 #
-	if (supplied_args != 6 ):  # arg [0] is the python program
-		print (info_msg1_1+nl+info_msg1_2+nl+info_msg1_3+nl+info_msg1_4+nl+info_msg1_5) #
+	if (supplied_args != 7):  # arg [0] is the python program
+		print(supplied_args)
+		print (info_msg1_1+nl+info_msg1_2+nl+info_msg1_3+nl+info_msg1_4+nl+info_msg1_5+info_msg1_6) #
 		return 1 #
 	else :
 		VPOT_conf.output_dir=sys.argv[2] #
 		VPOT_conf.input_file=sys.argv[3] #
 		VPOT_conf.gene_list=sys.argv[4] #
 		VPOT_conf.cancer_type=sys.argv[5] #
-
+		VPOT_conf.column_file=sys.argv[6] #
+		if (VPOT_conf.column_file != "None"):
+			print("There is a column header provided")
+			VPOT_conf.column_list = pd.read_csv(VPOT_conf.column_file, header=None).iloc[:,0].tolist()
+			print(VPOT_conf.column_list)
+			#extract column names from CSV
 		#extract list of genes by panel from input csv
 		df = pd.read_csv(VPOT_conf.gene_list,sep=",")
 		df.fillna("MiscCPG", inplace=True) #If panel is unspecified, lump into misc category
@@ -63,8 +70,6 @@ def initial_setup():
 		#make one list of genes for each panel
 		VPOT_conf.panel_gene_list=[list(grp_obj.get_group(panel)["Gene"]) for panel in VPOT_conf.panel_name_list]
 		VPOT_conf.n_panels = len(VPOT_conf.panel_name_list)
-		print ("output : ",VPOT_conf.final_output_file_list) #
-	
 	return 0 #
 #
 #
@@ -86,7 +91,7 @@ def filter_the_variants(): #
 				line_parts=re.split('\t|\n|\r',line1) # split the variant up
 				#			print "line part 0 : ",line_parts[0] #
 				if ("#CHROM" != line_parts[2]): #
-					#				
+					#
 					write_it=filter_variants_by_GN(line_parts, n) # check get priority score
 					#
 				else : # save the header line	
@@ -110,6 +115,8 @@ def filter_variants_by_GN(INFO_details, n): #
 	for gene_id in VPOT_conf.panel_gene_list[n]: # work each line of new sample vcf file 
 		gene_id1=gene_id.rstrip() #
 #		print ("Gene ID",gene_id1,"in",INFO1[i+1]  # move to pred_array slot
+#		print("gene id1",gene_id1)
+#		print("INFO_details",INFO_details)
 		if ( gene_id1 in INFO_details[GENE_loc] ) :		# is this the gene we are looking for   
 			gene_detail=re.split(',',INFO_details[GENE_loc]) # split into annotations
 			#print INFO_details[GENE_loc],"/",gene_detail,"/",gene_id1 #
@@ -145,7 +152,11 @@ def export_to_excel():
 			out = pd.read_csv(VPOT_conf.final_output_file_list[n], sep="\t")
 			format = workbook.add_format({'text_wrap': True})
 			if (out.empty == False):
-				df = expand_info(out).convert_dtypes()
+				if (VPOT_conf.column_file != "None"):
+					df = (expand_info(out).convert_dtypes())[VPOT_conf.column_list]
+					#reorder columns occurding to column list
+				else:
+					df = expand_info(out).convert_dtypes()
 				df.to_excel(writer, sheet_name=VPOT_conf.panel_name_list[n],
 								  index=False)
 				for col in df:
@@ -154,9 +165,15 @@ def export_to_excel():
 					if col == 'Interpro_domain':
 						writer.sheets[VPOT_conf.panel_name_list[n]].set_column(
 							col_idx, col_idx, min(col_length+2, 85))
+					elif col == 'REF':
+						writer.sheets[VPOT_conf.panel_name_list[n]].set_column(
+								col_idx, col_idx, 4)
+					elif col == "ALT":
+						writer.sheets[VPOT_conf.panel_name_list[n]].set_column(
+								col_idx, col_idx, 4)
 					else:
 						writer.sheets[VPOT_conf.panel_name_list[n]].set_column(
-							col_idx, col_idx, min(col_length+2, 85), format)
+							col_idx, col_idx, min(col_length+2, 60), format)
 
 ##
 ###########################################################################################################

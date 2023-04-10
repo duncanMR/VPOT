@@ -26,6 +26,10 @@ def init(): ##
 	panel_name_list=[] #
 	global n_panels #
 	n_panels=0 #
+	global column_file #
+	column_file="" #
+	global column_list #
+	column_list=[] #
     ######################################
 	global VPOT_option #
 	VPOT_option=0 #

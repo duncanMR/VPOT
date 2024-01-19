@@ -659,7 +659,7 @@ def prioritise_variants_by_VT_types(INFO_details): #
 #
 #	print "prioritise_variants_by_VT_types(INFO_details): " #
 #	print VT_array #
-	val=wrkval=pdval=-999 # this is the predictor priority score
+	val=wrkval=pdval=0 # this is the predictor priority score
 	VT_already_stored=False# 
 	VT_found_for_variant=False #
 	VT_k_found=False #
@@ -689,7 +689,6 @@ def prioritise_variants_by_VT_types(INFO_details): #
 						variant_INFO_val_array.append(INFO1[i+1])
 	if (len(variant_INFO_array) < 1) : # NO VT INFO fields found
 #		print ("no VT INFO field to match the VT PPF lines") #
-		val=0	# then set a 0 score,
 		return val # no further processing
 ######
 	logging.debug('VT WORK array : %s / %s', str(variant_INFO_array), str(variant_INFO_val_array))
@@ -716,9 +715,7 @@ def prioritise_variants_by_VT_types(INFO_details): #
 #							print ("vtfound") #
 							wrkval=int(VPOT_conf.VT_array[j][3])	 # yes - return the score for the variant
 #							print(f'wrkval is {wrkval}, val is {val}')
-							if (wrkval > val ) : #check for higher predictor score
-#								print ("new variant's VT score : ",wrkval) #
-								val=wrkval	
+							val+=wrkval	
 							break # stop loop as this one has found a match
 					else : # there is no annotation for this INFO field
 						break

@@ -200,6 +200,8 @@ def read_parameter_file(): #
 						VPOT_conf.VariantScoreThreshold=int(this_line[2]) # save it 
 					if (this_line[1] == "Percentage" ): # if threshold value - then 
 						VPOT_conf.VariantPercentageThreshold=int(this_line[2]) # save it 
+			#print(VPOT_conf.PD_array)
+			#print(VPOT_conf.PD_array)
 	#
 
 ###########################################################################################################
@@ -217,13 +219,13 @@ def create_final_output_file(): #
 #
 	COMMAND="sort -k1,1nr -k2,3V -k4,6 "+VPOT_conf.working_file1+" > "+tmp_final_output_file #  
 	subprocess.call(COMMAND, shell=True) #
+	
 #
 	priority_score=0 # initialise score 
 	with open(tmp_final_output_file,'r',encoding="utf-8") as variants_file, open(VPOT_conf.final_output_file,'a',encoding="utf-8") as score_file : # 
 		for line1 in variants_file: # work each line of new sample vcf file 
+#			print(line1)
 			line_parts=re.split('\t|\n|\r',line1) # split the variant up
-#			print "line part 0 : ",line_parts #
-#			print "priority score ",priority_score #
 			if ( float(priority_score) == 0) : # possible 1st variants 
 #				print "here 1",priority_score #
 				if ( float(line_parts[0]) == 0 ) : # variant line also 0
@@ -234,10 +236,12 @@ def create_final_output_file(): #
 					score=float(line_parts[0])/float(priority_score) #
 			else : # have a priority to work with
 				score=float(line_parts[0])/float(priority_score) #
+			
+#			print(f'priority_score is {priority_score}')
 			chgln=str(round(score,2))+tab+line1 #
-#
-			if ( int(score*100) >= int(VPOT_conf.VariantPercentageThreshold) ) : # check priority score,is it larger than threshold
-				score_file.write(chgln) #
+#			print(f'Check if {int(score*100)} >= {int(VPOT_conf.VariantPercentageThreshold)}')
+			#if ( int(score*100) >= int(VPOT_conf.VariantPercentageThreshold) ) : # check priority score,is it larger than threshold
+			score_file.write(chgln) #
 #
 #
 #	COMMAND="sed -i 's/\\\\x3b/,/g' "+VPOT_conf.final_output_file #  

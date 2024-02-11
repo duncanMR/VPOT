@@ -710,7 +710,7 @@ def prioritise_variants_by_VT_types(INFO_details): #
 #					print ("compare VT : vcf annotation - ",predval[k],"/ PPF VT- ",VPOT_conf.VT_array[j])  #
 					if (predval[k] != ".") : # an annotated value
 						VT_k_has_annotation=True #
-						if ( predval[k] == VPOT_conf.VT_array[j][2]) :	 # is this the specific variant type we are looking for   
+						if ( predval[k].lower() == VPOT_conf.VT_array[j][2].lower()) :	 # is this the specific variant type we are looking for   
 							VT_k_found=True # found a match
 #							print ("vtfound") #
 							wrkval=int(VPOT_conf.VT_array[j][3])	 # yes - return the score for the variant

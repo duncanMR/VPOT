@@ -135,9 +135,11 @@ def filter_variants_by_GN(INFO_details, n): #
 
 
 def extract_anno(string):
-	matches = re.findall("([^;=]+)=([^;=]+)", string)
-	matches_df = pd.DataFrame(matches).transpose()
-	return pd.Series(matches_df.values[1],index=matches_df.iloc[0]).replace(".",np.NaN)
+    matches = re.findall("([^;=]+)=([^;=]+)", string)
+    matches_df = pd.DataFrame(matches, columns=['Key', 'Value'])
+    matches_df.drop_duplicates(subset='Key', keep='first', inplace=True)
+    info_series = pd.Series(data=matches_df['Value'].values, index=matches_df['Key'])
+    return info_series.replace(".", np.NaN)
 
 def expand_info(df):
 	anno = df["INFO"].apply(extract_anno)
@@ -145,35 +147,32 @@ def expand_info(df):
 	return pd.concat([df,anno], axis=1)
 
 def export_to_excel():
-	with pd.ExcelWriter(VPOT_conf.output_dir+"output_genepanels.xlsx", mode="w", engine="xlsxwriter",
-						engine_kwargs={'options': {'strings_to_numbers': True}}) as writer:
-		workbook = writer.book
-		for n in range(VPOT_conf.n_panels):
-			out = pd.read_csv(VPOT_conf.final_output_file_list[n], sep="\t")
-			format = workbook.add_format({'text_wrap': True})
-			if (out.empty == False):
-				if (VPOT_conf.column_file != "None"):
-					df = (expand_info(out).convert_dtypes())[VPOT_conf.column_list]
-					#reorder columns occurding to column list
-				else:
-					df = expand_info(out).convert_dtypes()
-				df.to_excel(writer, sheet_name=VPOT_conf.panel_name_list[n],
-								  index=False)
-				for col in df:
-					col_length = max(df[col].astype(str).map(len).max(), len(col))
-					col_idx = df.columns.get_loc(col)
-					if col == 'Interpro_domain':
-						writer.sheets[VPOT_conf.panel_name_list[n]].set_column(
-							col_idx, col_idx, min(col_length+2, 85))
-					elif col == 'REF':
-						writer.sheets[VPOT_conf.panel_name_list[n]].set_column(
-								col_idx, col_idx, 4)
-					elif col == "ALT":
-						writer.sheets[VPOT_conf.panel_name_list[n]].set_column(
-								col_idx, col_idx, 4)
-					else:
-						writer.sheets[VPOT_conf.panel_name_list[n]].set_column(
-							col_idx, col_idx, min(col_length+2, 60), format)
+    with pd.ExcelWriter(VPOT_conf.output_dir + "output_genepanels.xlsx", mode="w", engine="xlsxwriter",
+                        engine_kwargs={'options': {'strings_to_numbers': True}}) as writer:
+        workbook = writer.book
+        for n in range(VPOT_conf.n_panels):
+            out = pd.read_csv(VPOT_conf.final_output_file_list[n], sep="\t")
+            if not out.empty:
+                expanded_df = expand_info(out).convert_dtypes()
+                # Ensure the specified columns are in the DataFrame and in the right order, then append any additional columns
+                column_order = [col for col in VPOT_conf.column_list if col in expanded_df.columns]
+                additional_cols = [col for col in expanded_df.columns if col not in VPOT_conf.column_list]
+                final_col_order = column_order + additional_cols
+                df = expanded_df[final_col_order]
+                # Now df has user-specified columns first, followed by any additional columns
+
+                df.to_excel(writer, sheet_name=VPOT_conf.panel_name_list[n], index=False)
+                for col in df:
+                    col_length = max(df[col].astype(str).map(len).max(), len(col))
+                    col_idx = df.columns.get_loc(col)
+                    if col == 'Interpro_domain':
+                        writer.sheets[VPOT_conf.panel_name_list[n]].set_column(
+                            col_idx, col_idx, min(col_length + 2, 85))
+                    elif col in {'REF', 'ALT'}:
+                        writer.sheets[VPOT_conf.panel_name_list[n]].set_column(col_idx, col_idx, 4)
+                    else:
+                        writer.sheets[VPOT_conf.panel_name_list[n]].set_column(
+                            col_idx, col_idx, min(col_length + 2, 60), workbook.add_format({'text_wrap': True}))
 
 ##
 ###########################################################################################################
